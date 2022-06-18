@@ -1,12 +1,7 @@
 from django.db import models
-
+from owners.models import Owner
 
 PET_CHOICES = (("cat", "cat"), ("dog", "dog"))
-
-
-class Owner(models.Model):
-    name = models.CharField(max_length=30)
-    birthday = models.DateField()
 
 
 class Pet(models.Model):
