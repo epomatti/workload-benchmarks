@@ -14,3 +14,6 @@ class PetSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Pet
         fields = ["id", "name", "age", "breed", "type", "owner"]
+    
+    # def get_query_set(self):
+    #     owner_id = self.request.query_params.get('owner')
