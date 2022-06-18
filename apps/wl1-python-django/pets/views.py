@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+
 from rest_framework import permissions
 from .serializers import OwnerSerializer, PetSerializer
 from .models import Owner, Pet
@@ -11,7 +12,8 @@ class OwnerViewSet(viewsets.ModelViewSet):
 
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ["post", "get"]
+    permission_classes = [permissions.AllowAny]
 
 
 class PetViewSet(viewsets.ModelViewSet):
@@ -21,4 +23,5 @@ class PetViewSet(viewsets.ModelViewSet):
 
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ["post", "get"]
+    permission_classes = [permissions.AllowAny]
