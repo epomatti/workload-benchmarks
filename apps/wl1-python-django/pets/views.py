@@ -7,7 +7,7 @@ from .models import Owner, Pet
 
 class OwnerViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows Owners to be viewed or edited.
     """
 
     queryset = Owner.objects.all()
@@ -18,7 +18,7 @@ class OwnerViewSet(viewsets.ModelViewSet):
 
 class PetViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows Pets to be viewed or edited.
     """
 
     queryset = Pet.objects.all()
