@@ -88,8 +88,16 @@ WSGI_APPLICATION = "wl1_python_django.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "mssql",
+        "NAME": env("DB_NAME"),
+        "HOST": env("DB_SERVER"),
+        "PORT": env("DB_PORT"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "OPTIONS": {
+            "driver": "ODBC Driver 18 for SQL Server",
+            'extra_params': "Encrypt=no;TrustServerCertificate=yes"
+        },
     }
 }
 
