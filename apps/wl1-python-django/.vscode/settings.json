@@ -2,5 +2,8 @@
   "python.linting.pylintEnabled": true,
   "python.formatting.provider": "black",
   "python.linting.pylintPath": ".venv/bin/pylint",
-  "python.formatting.blackPath": ".venv/bin/black"
+  "python.formatting.blackPath": ".venv/bin/black",
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django",
+  ]
 }

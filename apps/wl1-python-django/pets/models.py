@@ -10,4 +10,5 @@ class Pet(models.Model):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     age = models.IntegerField()
-    race = models.CharField(max_length=30)
+    type = models.CharField(max_length=30)
+    breed = models.CharField(max_length=30)
