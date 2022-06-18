@@ -12,7 +12,7 @@ poetry shell
 First install the [ODBC Driver](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server).
 
 ```sh
-sudo docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=StrPass#456" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=StrPass#456" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
 ℹ️ MSSQL 2022 is [not supported](https://github.com/microsoft/mssql-django/issues/149) at the time of writting.
