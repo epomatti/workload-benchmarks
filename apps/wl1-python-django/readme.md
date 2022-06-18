@@ -1,7 +1,7 @@
 # Workload 1: Pythong with Django
 
 ```sh
-poetry install
+poetry install --dev
 poetry shell
 ```
 
