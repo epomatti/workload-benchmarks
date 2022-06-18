@@ -22,6 +22,17 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Docker
+
+docker build -t django-app-image .
+
+docker run -e "DB_NAME=master" \
+  -e "DB_SERVER=localhost" \
+  -e "DB_PORT=1433" \
+  -e "DB_USER=SA" \
+  -e "DB_PASSWORD=StrPass#456" \
+  -p 8000:8000 django-app-image
+
 
 ## Reference Implementation
 
