@@ -45,10 +45,8 @@ RUN useradd --create-home appuser
 WORKDIR /home/appuser
 USER appuser
 
-ENV DEBUG="off"
 ENV ALLOWED_HOSTS="*"
 
 # Install application into container
 COPY . .
 ENTRYPOINT [ "/home/appuser/docker-entrypoint.sh" ]
-CMD [ "gunicorn", "wl1_python_django.wsgi" ]

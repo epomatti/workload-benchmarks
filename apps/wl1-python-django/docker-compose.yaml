@@ -12,9 +12,11 @@ services:
       - "8000:8000"
     environment:
       - DB_NAME=master
-      - DB_SERVER=wl1-python-django_db_1
+      - DB_SERVER=db
       - DB_PORT=1433
       - DB_USER=SA
       - DB_PASSWORD=StrPass#456
+      - DEBUG=on
+      - BACKEND_DEBUG=on
     depends_on:
       - db
