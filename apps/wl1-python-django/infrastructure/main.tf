@@ -87,6 +87,11 @@ resource "azurerm_linux_web_app" "default" {
     DOCKER_REGISTRY_SERVER_URL = "https://index.docker.io"
     # COSMOS_PRIMARY_CONNECTION_STRING   = azurerm_cosmosdb_account.default.connection_strings[0]
     WEBSITES_PORT = 8000
+    # DB_NAME = ""
+    # DB_SERVER = ""
+    # DB_PORT = ""
+    # DB_USER = ""
+    # DB_PASSWORD = ""
   }
 
 }
