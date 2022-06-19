@@ -17,6 +17,7 @@ services:
       - DB_USER=SA
       - DB_PASSWORD=StrPass#456
       - DEBUG=on
-      - BACKEND_DEBUG=on
+      # - BACKEND_DEBUG=off
+      # - DJANGO_LOG_LEVEL=DEBUG
     depends_on:
       - db

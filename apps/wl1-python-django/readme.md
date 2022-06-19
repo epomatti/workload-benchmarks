@@ -5,7 +5,7 @@ cp .config/dev.env .env
 ```
 
 ```sh
-poetry install --dev
+poetry install
 poetry shell
 ```
 
@@ -35,7 +35,38 @@ docker run -e "DB_NAME=master" \
   -p 8000:8000 django-app-image
 ```
 
-docker run --rm -it --name django-app django-app-image
+
+
+
+### Docker with Network
+
+F
+
+```sh
+docker network create django-network
+
+docker run --net django-network --name django-mssql -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=StrPass#456" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+
+sudo docker run --net django-network --rm -it --name django-app \
+  -e "DB_NAME=master" \
+  -e "DB_SERVER=django-mssql" \
+  -e "DB_PORT=1433" \
+  -e "DB_USER=SA" \
+  -e "DB_PASSWORD=StrPass#456" \
+  -e "DEBUG=True" \
+  -p 8000:8000 django-app-image
+
+
+```
+
+
+
+
+poetry config experimental.new-installer false
+
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 
 ## Reference Implementation
 

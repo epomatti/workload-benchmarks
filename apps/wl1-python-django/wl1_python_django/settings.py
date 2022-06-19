@@ -31,7 +31,6 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-hg_byn7fa_a@+dym+ba#b(*np@h)-awv_xyo^sj_al&n_a=gr$"
 
-
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
@@ -148,22 +147,48 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # To guarantee performance
 APPEND_SLASH = False
 
-BACKEND_DEBUG = env("BACKEND_DEBUG", default=False)
+# BACKEND_DEBUG = env("BACKEND_DEBUG", default=False)
 
-if BACKEND_DEBUG is True:
-    LOGGING = {
-        "version": 1,
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-            },
-        },
-        "loggers": {
-            "django.db.backends": {
-                "level": "DEBUG",
-            },
-        },
-        "root": {
-            "handlers": ["console"],
-        },
-    }
+# if BACKEND_DEBUG is True:
+#     LOGGING = {
+#         "version": 1,
+#         "handlers": {
+#             "console": {
+#                 "class": "logging.StreamHandler",
+#             },
+#         },
+#         "loggers": {
+#             "django.db.backends": {
+#                 "level": "DEBUG",
+#             },
+#         },
+#         "root": {
+#             "handlers": ["console"],
+#         },
+#     }
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': 'debug.log',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console'],
+#         'level': 'WARNING',
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console', 'file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
