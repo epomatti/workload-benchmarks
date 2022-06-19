@@ -50,6 +50,5 @@ ENV ALLOWED_HOSTS="*"
 
 # Install application into container
 COPY . .
-ENTRYPOINT [ "python", "manage.py", "migrate" ]
-#CMD [ "waitress-serve", "--call", "src.app:create_app" ]
+ENTRYPOINT [ "/home/appuser/docker-entrypoint.sh" ]
 CMD [ "gunicorn", "wl1_python_django.wsgi" ]
