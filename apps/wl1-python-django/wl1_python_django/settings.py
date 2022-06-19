@@ -96,7 +96,7 @@ DATABASES = {
         "PASSWORD": env("DB_PASSWORD"),
         "OPTIONS": {
             "driver": "ODBC Driver 18 for SQL Server",
-            'extra_params': "Encrypt=no;TrustServerCertificate=yes"
+            "extra_params": "Encrypt=no;TrustServerCertificate=yes",
         },
     }
 }
@@ -148,7 +148,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # To guarantee performance
 APPEND_SLASH = False
 
-if DEBUG is True:
+BACKEND_DEBUG = env("BACKEND_DEBUG", default=False)
+
+if BACKEND_DEBUG is True:
     LOGGING = {
         "version": 1,
         "handlers": {
