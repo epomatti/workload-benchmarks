@@ -16,8 +16,5 @@ services:
       - DB_PORT=1433
       - DB_USER=SA
       - DB_PASSWORD=StrPass#456
-      - DEBUG=on
-      # - BACKEND_DEBUG=off
-      # - DJANGO_LOG_LEVEL=DEBUG
     depends_on:
       - db

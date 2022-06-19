@@ -1,4 +1,3 @@
 #!/bin/sh
 python manage.py migrate
-# gunicorn wl1_python_django.wsgi
-python manage.py runserver
+gunicorn --bind=0.0.0.0:8000 wl1_python_django.wsgi

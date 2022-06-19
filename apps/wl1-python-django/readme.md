@@ -1,5 +1,14 @@
 # Workload 1: Pythong with Django
 
+## Local Development
+
+Requirements:
+- Linux Build Tools
+- Pyenv (recommended)
+- Poetry
+- MSSQL ODBC
+- Docker
+
 ```sh
 cp .config/dev.env .env
 ```
@@ -7,6 +16,11 @@ cp .config/dev.env .env
 ```sh
 poetry install
 poetry shell
+
+# If you're on WSL2 and install is hanging, disable IPv6
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 ```
 
 First install the [ODBC Driver](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server).
@@ -35,17 +49,13 @@ docker run -e "DB_NAME=master" \
   -p 8000:8000 django-app-image
 ```
 
-
-
-
 ### Docker with Network
 
-F
 
 ```sh
 docker network create django-network
 
-docker run --net django-network --name django-mssql -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=StrPass#456" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker run --rm --net django-network --name django-mssql -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=StrPass#456" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
 sudo docker run --net django-network --rm -it --name django-app \
   -e "DB_NAME=master" \
@@ -55,18 +65,10 @@ sudo docker run --net django-network --rm -it --name django-app \
   -e "DB_PASSWORD=StrPass#456" \
   -e "DEBUG=True" \
   -p 8000:8000 django-app-image
-
-
 ```
 
 
 
-
-poetry config experimental.new-installer false
-
-sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
-sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
-sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 
 ## Reference Implementation
 
