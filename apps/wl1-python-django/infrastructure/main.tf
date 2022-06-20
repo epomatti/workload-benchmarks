@@ -35,6 +35,41 @@ resource "azurerm_log_analytics_workspace" "default" {
   retention_in_days   = 30
 }
 
+# Network
+
+resource "azurerm_virtual_network" "default" {
+  name                = "vnet-benchmark"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  address_space       = ["10.0.0.0/16"]
+}
+
+resource "azurerm_subnet" "mssql" {
+  name                 = "mssql-subnet"
+  resource_group_name  = azurerm_resource_group.default.name
+  virtual_network_name = azurerm_virtual_network.default.name
+  address_prefixes     = ["10.0.10.0/24"]
+  service_endpoints    = ["Microsoft.Sql"]
+}
+
+resource "azurerm_subnet" "app" {
+  name                 = "app-subnet"
+  resource_group_name  = azurerm_resource_group.default.name
+  virtual_network_name = azurerm_virtual_network.default.name
+  address_prefixes     = ["10.0.20.0/24"]
+  service_endpoints    = ["Microsoft.Sql"]
+
+  delegation {
+    name = "delegation"
+    service_delegation {
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/action",
+      ]
+      name = "Microsoft.Web/serverFarms"
+    }
+  }
+}
+
 # Database
 
 resource "azurerm_mssql_server" "default" {
@@ -47,13 +82,24 @@ resource "azurerm_mssql_server" "default" {
 }
 
 resource "azurerm_mssql_database" "default" {
-  name               = "sqldb-benchmark"
-  server_id          = azurerm_mssql_server.default.id
-  max_size_gb        = var.mssql_max_size_gb
-  read_scale         = var.mssql_read_scale
-  sku_name           = var.mssql_sku_name
-  zone_redundant     = var.mssql_zone_redundant
-  geo_backup_enabled = false
+  name           = "sqldb-benchmark"
+  server_id      = azurerm_mssql_server.default.id
+  max_size_gb    = var.mssql_max_size_gb
+  read_scale     = var.mssql_read_scale
+  sku_name       = var.mssql_sku_name
+  zone_redundant = var.mssql_zone_redundant
+}
+
+resource "azurerm_mssql_virtual_network_rule" "sql" {
+  name      = "sql-vnet-rule"
+  server_id = azurerm_mssql_server.default.id
+  subnet_id = azurerm_subnet.mssql.id
+}
+
+resource "azurerm_mssql_virtual_network_rule" "app" {
+  name      = "app-vnet-rule"
+  server_id = azurerm_mssql_server.default.id
+  subnet_id = azurerm_subnet.app.id
 }
 
 # App
@@ -94,6 +140,11 @@ resource "azurerm_linux_web_app" "default" {
     DB_PASSWORD                = var.mssql_password
   }
 
+}
+
+resource "azurerm_app_service_virtual_network_swift_connection" "default" {
+  app_service_id = azurerm_linux_web_app.default.id
+  subnet_id      = azurerm_subnet.app.id
 }
 
 # resource "azurerm_application_insights" "default" {
