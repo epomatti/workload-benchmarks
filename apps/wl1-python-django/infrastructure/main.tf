@@ -147,12 +147,14 @@ resource "azurerm_app_service_virtual_network_swift_connection" "default" {
   subnet_id      = azurerm_subnet.app.id
 }
 
-# resource "azurerm_application_insights" "default" {
-#   name                = "appi-benchmark"
-#   location            = azurerm_resource_group.default.location
-#   resource_group_name = azurerm_resource_group.default.name
-#   workspace_id        = azurerm_log_analytics_workspace.default.id
-# }
+
+resource "azurerm_application_insights" "default" {
+  name                = "appi-benchmark"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  workspace_id        = azurerm_log_analytics_workspace.default.id
+  application_type    = "other"
+}
 
 resource "azurerm_monitor_diagnostic_setting" "app" {
   name                       = "Application Diagnostics"
