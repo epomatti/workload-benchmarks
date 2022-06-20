@@ -41,12 +41,13 @@ COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
 
 # Create and switch to a new user
-RUN useradd --create-home appuser
-WORKDIR /home/appuser
-USER appuser
+# RUN useradd --create-home appuser
+WORKDIR /app
+# USER appuser
 
 ENV ALLOWED_HOSTS="*"
 
 # Install application into container
 COPY . .
-ENTRYPOINT [ "/home/appuser/docker-entrypoint.sh" ]
+RUN chmod +x docker-entrypoint.sh
+ENTRYPOINT [ "docker-entrypoint.sh" ]
