@@ -50,4 +50,4 @@ ENV ALLOWED_HOSTS="*"
 # Install application into container
 COPY . .
 RUN chmod +x docker-entrypoint.sh
-ENTRYPOINT [ "docker-entrypoint.sh" ]
+ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
