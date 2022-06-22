@@ -32,6 +32,11 @@ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=StrPass#456" -p 1433:1433 -d mcr.m
 ℹ️ MSSQL 2022 is [not supported](https://github.com/microsoft/mssql-django/issues/149) at the time of writting.
 
 ```sh
+az extension add --name application-insights
+az monitor app-insights component show --app 'appi-benchmark' -g 'rg-benchmark' --query 'connectionString' -o tsv
+```
+
+```sh
 python manage.py migrate
 python manage.py runserver
 ```

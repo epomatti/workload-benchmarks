@@ -59,6 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "opencensus.ext.django.middleware.OpencensusMiddleware",
 ]
 
 ROOT_URLCONF = "wl1_python_django.urls"
@@ -146,3 +147,39 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # To guarantee performance
 APPEND_SLASH = False
+
+### Logging / Metrics ###
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "azure": {
+            "level": "WARNING",
+            "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+        },
+        "insights": {
+            "handlers": ["azure"],
+            "level": "WARNING",
+        },
+    },
+}
+
+CONNECTION_STRING = env("APPLICATIONINSIGHTS_CONNECTION_STRING")
+
+OPENCENSUS = {
+    "TRACE": {
+        "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
+        "EXPORTER": f"""opencensus.ext.azure.trace_exporter.AzureExporter(
+            connection_string="{CONNECTION_STRING}"
+        )""",
+    }
+}

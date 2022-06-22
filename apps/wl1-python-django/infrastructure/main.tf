@@ -102,6 +102,16 @@ resource "azurerm_mssql_virtual_network_rule" "app" {
   subnet_id = azurerm_subnet.app.id
 }
 
+# Insights
+
+resource "azurerm_application_insights" "default" {
+  name                = "appi-benchmark"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  workspace_id        = azurerm_log_analytics_workspace.default.id
+  application_type    = "other"
+}
+
 # App
 
 resource "azurerm_service_plan" "default" {
@@ -130,16 +140,16 @@ resource "azurerm_linux_web_app" "default" {
   }
 
   app_settings = {
-    DOCKER_ENABLE_CI           = true
-    DOCKER_REGISTRY_SERVER_URL = "https://index.docker.io"
-    WEBSITES_PORT              = 8000
-    DB_NAME                    = azurerm_mssql_database.default.name
-    DB_SERVER                  = azurerm_mssql_server.default.fully_qualified_domain_name
-    DB_PORT                    = 1433
-    DB_USER                    = var.mssql_login
-    DB_PASSWORD                = var.mssql_password
+    APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.default.connection_string
+    DOCKER_ENABLE_CI                      = true
+    DOCKER_REGISTRY_SERVER_URL            = "https://index.docker.io"
+    WEBSITES_PORT                         = 8000
+    DB_NAME                               = azurerm_mssql_database.default.name
+    DB_SERVER                             = azurerm_mssql_server.default.fully_qualified_domain_name
+    DB_PORT                               = 1433
+    DB_USER                               = var.mssql_login
+    DB_PASSWORD                           = var.mssql_password
   }
-
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "default" {
@@ -147,14 +157,6 @@ resource "azurerm_app_service_virtual_network_swift_connection" "default" {
   subnet_id      = azurerm_subnet.app.id
 }
 
-
-resource "azurerm_application_insights" "default" {
-  name                = "appi-benchmark"
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
-  workspace_id        = azurerm_log_analytics_workspace.default.id
-  application_type    = "other"
-}
 
 resource "azurerm_monitor_diagnostic_setting" "app" {
   name                       = "Application Diagnostics"

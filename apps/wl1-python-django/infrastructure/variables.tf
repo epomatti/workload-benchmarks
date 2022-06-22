@@ -4,7 +4,7 @@ variable "location" {
 }
 
 variable "rg_name" {
-  default = "rg-workloadbenchmark"
+  default = "rg-benchmark"
   type    = string
 }
 
