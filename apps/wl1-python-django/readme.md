@@ -41,6 +41,12 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## K6
+
+```sh
+k6 run --vus 100 --duration 30s k6.js
+```
+
 ## Docker
 
 ```sh
