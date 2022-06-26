@@ -1,5 +1,9 @@
 # Workload 1: Pythong with Django
 
+Services Endpoints
+
+TODO: https://docs.microsoft.com/en-us/azure/azure-sql/database/vnet-service-endpoint-rule-overview?toc=%2Fazure%2Fvirtual-network%2Ftoc.json&view=azuresql
+
 ## Local Development
 
 Requirements:
