@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.10.0"
+      version = "3.11.0"
     }
   }
   backend "local" {
@@ -73,7 +73,7 @@ resource "azurerm_subnet" "app" {
 # Database
 
 resource "azurerm_mssql_server" "default" {
-  name                         = "sql-workloadbenchmark"
+  name                         = "sql-benchmark999"
   resource_group_name          = azurerm_resource_group.default.name
   location                     = azurerm_resource_group.default.location
   version                      = var.mssql_version
@@ -115,7 +115,7 @@ resource "azurerm_application_insights" "default" {
 # App
 
 resource "azurerm_service_plan" "default" {
-  name                = "plan-workloadbenchmark"
+  name                = "plan-benchmark"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   os_type             = "Linux"
@@ -124,7 +124,7 @@ resource "azurerm_service_plan" "default" {
 }
 
 resource "azurerm_linux_web_app" "default" {
-  name                = "app-workloadbenchmark-999"
+  name                = "app-benchmark999"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   service_plan_id     = azurerm_service_plan.default.id
