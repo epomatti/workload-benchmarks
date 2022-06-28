@@ -175,6 +175,10 @@ resource "azurerm_monitor_diagnostic_setting" "plan" {
   metric {
     category = "AllMetrics"
     enabled  = true
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
   }
 }
 
