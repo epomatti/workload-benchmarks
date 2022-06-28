@@ -257,6 +257,13 @@ resource "azurerm_monitor_diagnostic_setting" "app" {
 
 # Load Testing VM
 
+resource "azurerm_public_ip" "default" {
+  name                = "pip-benchmark"
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  allocation_method   = "Static"
+}
+
 resource "azurerm_network_interface" "default" {
   name                = "nic-benchmark"
   resource_group_name = azurerm_resource_group.default.name
@@ -266,6 +273,7 @@ resource "azurerm_network_interface" "default" {
     name                          = "subnet-config"
     subnet_id                     = azurerm_subnet.vm.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.default.id
   }
 }
 
