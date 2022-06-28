@@ -179,7 +179,7 @@ if CONNECTION_STRING is not None:
     OPENCENSUS = {
         "TRACE": {
             "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
-            "EXPORTER": f"""opencensus.ext.azure.trace_exporter.AzureExporter(s
+            "EXPORTER": f"""opencensus.ext.azure.trace_exporter.AzureExporter(
                 connection_string="{CONNECTION_STRING}"
             )""",
         }
