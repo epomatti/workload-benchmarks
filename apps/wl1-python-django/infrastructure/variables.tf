@@ -48,8 +48,15 @@ variable "mssql_zone_redundant" {
 
 
 # Plan
-
 variable "plan_sku_name" {
   default = "S1"
   type    = string
+}
+
+
+# VM
+variable "vm_password" {
+  default   = "4-v3ry-53cr37-p455w0rd"
+  type      = string
+  sensitive = true
 }

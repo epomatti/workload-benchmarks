@@ -269,39 +269,29 @@ resource "azurerm_network_interface" "default" {
   }
 }
 
-resource "azurerm_virtual_machine" "default" {
-  name                  = "vm-bechmark"
+resource "azurerm_linux_virtual_machine" "default" {
+  name                  = "vm-benchmark"
   resource_group_name   = azurerm_resource_group.default.name
   location              = azurerm_resource_group.default.location
+  size                  = "Standard_DS1_v2"
+  admin_username        = "adminuser"
   network_interface_ids = [azurerm_network_interface.default.id]
-  vm_size               = "Standard_DS1_v2"
+  custom_data           = filebase64("${path.module}/cloud-init.sh")
 
-  delete_os_disk_on_termination    = true
-  delete_data_disks_on_termination = true
+  admin_ssh_key {
+    username   = "adminuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
 
-  storage_image_reference {
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "StandardSSD_LRS"
+  }
+
+  source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
     sku       = "22_04-lts-gen2"
-    version   = "22.04.202205060"
+    version   = "latest"
   }
-
-  storage_os_disk {
-    name              = "disk-vm-benchmark"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "StandardSSD_LRS"
-  }
-
-  os_profile {
-    computer_name  = "jumpbox"
-    admin_username = "azureuser"
-    # admin_password = var.password
-    custom_data    = filebase64("${path.module}/cloud-init.sh")
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-
 }
