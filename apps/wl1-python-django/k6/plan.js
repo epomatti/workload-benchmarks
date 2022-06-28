@@ -3,7 +3,8 @@ import { sleep } from 'k6';
 
 export default function () {
 
-  const server = "app-benchmark999.azurewebsites.net";
+  // const server = "https://app-benchmark999.azurewebsites.net";
+  const server = "http://localhost:8000";
 
   const ownerBody = {
     "name": "John",
@@ -11,9 +12,9 @@ export default function () {
     "birthday": "2000-01-05"
   }
 
-  const owner = http.post(`https://${server}/api/owners/`, ownerBody);
+  const owner = http.post(`${server}/api/owners/`, ownerBody);
   const ownerObj = JSON.parse(owner.body);
-  const res1 = http.get(`https://${server}/api/owners/${ownerObj.id}/`);
+  const res1 = http.get(`${server}/api/owners/${ownerObj.id}/`);
 
   const petBody = {
     "name": "Linda",
@@ -23,10 +24,10 @@ export default function () {
     "owner": ownerObj.id
   }
 
-  const pet = http.post(`https://${server}/api/pets/`, petBody);
+  const pet = http.post(`${server}/api/pets/`, petBody);
   const petObj = JSON.parse(pet.body);
 
-  http.get(`https://${server}/api/pets/${petObj.id}/`);
+  http.get(`${server}/api/pets/${petObj.id}/`);
 
   sleep(1);
 

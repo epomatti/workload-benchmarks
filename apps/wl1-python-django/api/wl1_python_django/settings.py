@@ -150,36 +150,39 @@ APPEND_SLASH = False
 
 ### Logging / Metrics ###
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "azure": {
-            "level": "WARNING",
-            "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
-        },
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-        },
-        "insights": {
-            "handlers": ["azure"],
-            "level": "WARNING",
-        },
-    },
-}
+CONNECTION_STRING = env("APPLICATIONINSIGHTS_CONNECTION_STRING", default=None)
 
-CONNECTION_STRING = env("APPLICATIONINSIGHTS_CONNECTION_STRING")
-
-OPENCENSUS = {
-    "TRACE": {
-        "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
-        "EXPORTER": f"""opencensus.ext.azure.trace_exporter.AzureExporter(
-            connection_string="{CONNECTION_STRING}"
-        )""",
+if CONNECTION_STRING is not None:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "azure": {
+                "level": "WARNING",
+                "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
+            },
+            "console": {
+                "class": "logging.StreamHandler",
+            },
+        },
+        "loggers": {
+            "django": {
+                "handlers": ["console"],
+            },
+            "insights": {
+                "handlers": ["azure"],
+                "level": "WARNING",
+            },
+        },
     }
-}
+
+    CONNECTION_STRING = env("APPLICATIONINSIGHTS_CONNECTION_STRING")
+
+    OPENCENSUS = {
+        "TRACE": {
+            "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
+            "EXPORTER": f"""opencensus.ext.azure.trace_exporter.AzureExporter(s
+                connection_string="{CONNECTION_STRING}"
+            )""",
+        }
+    }

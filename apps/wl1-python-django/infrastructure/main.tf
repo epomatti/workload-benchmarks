@@ -70,6 +70,14 @@ resource "azurerm_subnet" "app" {
   }
 }
 
+resource "azurerm_subnet" "vm" {
+  name                 = "vm-subnet"
+  resource_group_name  = azurerm_resource_group.default.name
+  virtual_network_name = azurerm_virtual_network.default.name
+  address_prefixes     = ["10.0.90.0/24"]
+  service_endpoints    = ["Microsoft.Web"]
+}
+
 # Database
 
 resource "azurerm_mssql_server" "default" {
@@ -129,6 +137,8 @@ resource "azurerm_linux_web_app" "default" {
   location            = azurerm_resource_group.default.location
   service_plan_id     = azurerm_service_plan.default.id
   https_only          = true
+
+  # TODO: Health Check
 
   site_config {
     always_on = true
@@ -243,4 +253,55 @@ resource "azurerm_monitor_diagnostic_setting" "app" {
       enabled = true
     }
   }
+}
+
+# Load Testing VM
+
+resource "azurerm_network_interface" "default" {
+  name                = "nic-benchmark"
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+
+  ip_configuration {
+    name                          = "subnet-config"
+    subnet_id                     = azurerm_subnet.vm.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+resource "azurerm_virtual_machine" "default" {
+  name                  = "vm-bechmark"
+  resource_group_name   = azurerm_resource_group.default.name
+  location              = azurerm_resource_group.default.location
+  network_interface_ids = [azurerm_network_interface.default.id]
+  vm_size               = "Standard_DS1_v2"
+
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
+
+  storage_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-gen2"
+    version   = "22.04.202205060"
+  }
+
+  storage_os_disk {
+    name              = "disk-vm-benchmark"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "StandardSSD_LRS"
+  }
+
+  os_profile {
+    computer_name  = "jumpbox"
+    admin_username = "azureuser"
+    # admin_password = var.password
+    custom_data    = filebase64("${path.module}/cloud-init.sh")
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
 }
