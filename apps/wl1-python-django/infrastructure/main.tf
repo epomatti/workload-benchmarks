@@ -157,6 +157,17 @@ resource "azurerm_app_service_virtual_network_swift_connection" "default" {
   subnet_id      = azurerm_subnet.app.id
 }
 
+resource "azurerm_monitor_diagnostic_setting" "plan" {
+  name                       = "Plan Diagnostics"
+  target_resource_id         = azurerm_service_plan.default.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.default.id
+
+  metric {
+    category = "AllMetrics"
+    enabled  = true
+  }
+}
+
 
 resource "azurerm_monitor_diagnostic_setting" "app" {
   name                       = "Application Diagnostics"
