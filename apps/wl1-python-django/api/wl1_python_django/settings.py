@@ -176,8 +176,6 @@ if CONNECTION_STRING is not None:
         },
     }
 
-    CONNECTION_STRING = env("APPLICATIONINSIGHTS_CONNECTION_STRING")
-
     OPENCENSUS = {
         "TRACE": {
             "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
