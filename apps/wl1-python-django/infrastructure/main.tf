@@ -261,6 +261,24 @@ resource "azurerm_monitor_diagnostic_setting" "app" {
 
 # Load Testing VM
 
+resource "azurerm_network_security_group" "default" {
+  name                = "nsg-benchmark"
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+
+  security_rule {
+    name                       = "SSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
 resource "azurerm_public_ip" "default" {
   name                = "pip-benchmark"
   resource_group_name = azurerm_resource_group.default.name
@@ -279,6 +297,11 @@ resource "azurerm_network_interface" "default" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.default.id
   }
+}
+
+resource "azurerm_network_interface_security_group_association" "default" {
+  network_interface_id      = azurerm_network_interface.default.id
+  network_security_group_id = azurerm_network_security_group.default.id
 }
 
 resource "azurerm_linux_virtual_machine" "default" {

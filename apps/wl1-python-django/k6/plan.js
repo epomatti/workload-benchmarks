@@ -3,8 +3,8 @@ import { sleep } from 'k6';
 
 export default function () {
 
-  // const server = "https://app-benchmark999.azurewebsites.net";
-  const server = "http://localhost:8000";
+  const server = "https://app-benchmark999.azurewebsites.net";
+  // const server = "http://localhost:8000";
 
   const ownerBody = {
     "name": "John",
