@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using pets;
 
@@ -42,6 +43,8 @@ public class Pet
   public int Age { get; set; }
   public string Breed { get; set; }
   public string Type { get; set; }
+
+  [JsonIgnore]
   public Owner? Owner { get; set; }
 
   public Pet(string name, int age, string breed, string type)

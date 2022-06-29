@@ -44,7 +44,6 @@ public class PetController : ControllerBase
     }
     Pet pet = new Pet(request.Name!, request.Age, request.Breed!, request.Type!);
     pet.Owner = owner;
-    // pet.OwnerId = request.Owner;
     await _context.Pets.AddAsync(pet);
     await _context.SaveChangesAsync();
     return CreatedAtAction(nameof(Create), new { id = pet.Id }, pet);

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 namespace pets;
 
 [ApiController]
@@ -19,7 +21,10 @@ public class OwnerController : ControllerBase
   [HttpGet]
   public IEnumerable<Owner> GetAll()
   {
-    return _context.Owners!;
+    var owners = _context.Owners
+                        .Include(o => o.Pets)
+                        .ToList();
+    return owners;
   }
 
   [HttpGet("{id}")]
