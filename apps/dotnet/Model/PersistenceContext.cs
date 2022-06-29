@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using pets;
@@ -23,7 +24,8 @@ public class PersistenceContext : DbContext
 
 public class Owner
 {
-  [DatabaseGenerated(DatabaseGeneratedOption.None)]
+  [Key]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
   public string? Name { get; set; }
   public DateTime Birthday { get; set; }
@@ -33,7 +35,8 @@ public class Owner
 
 public class Pet
 {
-  [DatabaseGenerated(DatabaseGeneratedOption.None)]
+  [Key]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
   public string Name { get; set; }
   public int Age { get; set; }
