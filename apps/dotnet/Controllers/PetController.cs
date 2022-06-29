@@ -17,9 +17,15 @@ public class PetController : ControllerBase
   }
 
   [HttpGet]
-  public IEnumerable<Pet> Get()
+  public IEnumerable<Pet> GetAll()
   {
     return _context.Pets!;
+  }
+
+  [HttpGet("{id}")]
+  public async Task<Pet> GetById(int id)
+  {
+    return await _context.Pets.FindAsync(id);
   }
 
 }
