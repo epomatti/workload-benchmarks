@@ -8,19 +8,18 @@ public class PetController : ControllerBase
 {
 
   private readonly BuildConfig _config;
+  private PetContext _context;
 
-  public PetController(BuildConfig config)
+  public PetController(BuildConfig config, PetContext context)
   {
     _config = config;
+    _context = context;
   }
 
   [HttpGet]
   public IEnumerable<Pet> Get()
   {
-    Console.WriteLine("hahaha");
-    Console.WriteLine(_config.GetConfig().DB_SERVER);
-
-    return null;
+    return _context.Pets!;
   }
 
 }

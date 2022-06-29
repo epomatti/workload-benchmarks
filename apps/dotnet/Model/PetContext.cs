@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using pets;
 
@@ -16,11 +17,14 @@ public class PetContext : DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder options)
       => options.UseSqlServer(
-            @"Server=(localdb)\mssqllocaldb;Database=Blogging;Trusted_Connection=True");
+            @"Data Source=localhost; Initial Catalog=master; User Id=SA; Password=StrPass#456");
+
+  // "Data Source=localhost; Initial Catalog=dotnet-6-crud-api; User Id=testUser; Password=testPass123"
 }
 
 public class Owner
 {
+  [DatabaseGenerated(DatabaseGeneratedOption.None)]
   public int Id { get; set; }
   public string? Name { get; set; }
   public DateTime Birthday { get; set; }
@@ -30,6 +34,7 @@ public class Owner
 
 public class Pet
 {
+  [DatabaseGenerated(DatabaseGeneratedOption.None)]
   public int Id { get; set; }
   public string? Name { get; set; }
   public int Age { get; set; }
