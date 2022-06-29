@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 namespace pets;
 
@@ -28,11 +29,27 @@ public class PetController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<Pet> GetById(Pet pet)
+  public async Task<Pet> Create(CreatePetRequest request)
   {
-    _context.Pets.Add(pet);
+    Owner? owner = await _context.Owners.FindAsync(request.Owner);
+    if (owner == null)
+    {
+      throw new HttpResponseException(HttpStatusCode.BadRequest);
+    }
+    Pet pet = new Pet(request.Name!, request.Age, request.Breed!, request.Type!);
+    pet.OwnerId = request.Owner;
+    await _context.Pets.AddAsync(pet);
     await _context.SaveChangesAsync();
     return pet;
+  }
+
+  public class CreatePetRequest
+  {
+    public string? Name { get; set; }
+    public int Age { get; set; }
+    public string? Type { get; set; }
+    public string? Breed { get; set; }
+    public int Owner { get; set; }
   }
 
 }

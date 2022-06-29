@@ -59,7 +59,7 @@ namespace pets.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OwnerFK")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
@@ -68,7 +68,7 @@ namespace pets.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerFK");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Pets");
                 });
@@ -77,7 +77,7 @@ namespace pets.Migrations
                 {
                     b.HasOne("Owner", "Owner")
                         .WithMany("Pets")
-                        .HasForeignKey("OwnerFK")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

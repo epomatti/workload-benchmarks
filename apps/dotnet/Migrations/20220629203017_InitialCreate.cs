@@ -33,23 +33,23 @@ namespace pets.Migrations
                     Age = table.Column<int>(type: "int", nullable: false),
                     Breed = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerFK = table.Column<int>(type: "int", nullable: false)
+                    OwnerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pets_Owners_OwnerFK",
-                        column: x => x.OwnerFK,
+                        name: "FK_Pets_Owners_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "Owners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pets_OwnerFK",
+                name: "IX_Pets_OwnerId",
                 table: "Pets",
-                column: "OwnerFK");
+                column: "OwnerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

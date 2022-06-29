@@ -31,7 +31,7 @@ public class OwnerController : ControllerBase
   [HttpPost]
   public async Task<Owner> GetById(Owner owner)
   {
-    _context.Owners.Add(owner);
+    await _context.Owners.AddAsync(owner);
     await _context.SaveChangesAsync();
     return owner;
   }
