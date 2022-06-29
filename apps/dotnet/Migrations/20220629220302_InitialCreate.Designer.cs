@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace pets.Migrations
 {
     [DbContext(typeof(PersistenceContext))]
-    [Migration("20220629203017_InitialCreate")]
+    [Migration("20220629220302_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace pets.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<int?>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
@@ -79,9 +79,7 @@ namespace pets.Migrations
                 {
                     b.HasOne("Owner", "Owner")
                         .WithMany("Pets")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerId");
 
                     b.Navigation("Owner");
                 });

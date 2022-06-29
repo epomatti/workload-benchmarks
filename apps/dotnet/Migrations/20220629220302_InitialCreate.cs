@@ -33,7 +33,7 @@ namespace pets.Migrations
                     Age = table.Column<int>(type: "int", nullable: false),
                     Breed = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false)
+                    OwnerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,8 +42,7 @@ namespace pets.Migrations
                         name: "FK_Pets_Owners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

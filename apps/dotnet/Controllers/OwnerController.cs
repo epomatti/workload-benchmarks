@@ -23,17 +23,22 @@ public class OwnerController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public async Task<Owner?> GetById(int id)
+  public async Task<ActionResult<Owner?>> GetById(int id)
   {
-    return await _context.Owners.FindAsync(id);
+    Owner? owner = await _context.Owners.FindAsync(id);
+    if (owner == null)
+    {
+      return NotFound();
+    }
+    return Ok(owner);
   }
 
   [HttpPost]
-  public async Task<Owner> GetById(Owner owner)
+  public async Task<ActionResult<Owner>> Create(Owner owner)
   {
     await _context.Owners.AddAsync(owner);
     await _context.SaveChangesAsync();
-    return owner;
+    return CreatedAtAction(nameof(Create), new { id = owner.Id }, owner);
   }
 
 }

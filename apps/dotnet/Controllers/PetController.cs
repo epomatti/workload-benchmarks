@@ -23,24 +23,31 @@ public class PetController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public async Task<Pet?> GetById(int id)
+  public async Task<ActionResult<Pet?>> GetById(int id)
   {
-    return await _context.Pets.FindAsync(id);
+
+    Pet? pet = await _context.Pets.FindAsync(id);
+    if (pet == null)
+    {
+      return NotFound();
+    }
+    return Ok(pet);
   }
 
   [HttpPost]
-  public async Task<Pet> Create(CreatePetRequest request)
+  public async Task<ActionResult<Pet>> Create(CreatePetRequest request)
   {
     Owner? owner = await _context.Owners.FindAsync(request.Owner);
     if (owner == null)
     {
-      throw new HttpResponseException(HttpStatusCode.BadRequest);
+      return new BadRequestResult();
     }
     Pet pet = new Pet(request.Name!, request.Age, request.Breed!, request.Type!);
-    pet.OwnerId = request.Owner;
+    pet.Owner = owner;
+    // pet.OwnerId = request.Owner;
     await _context.Pets.AddAsync(pet);
     await _context.SaveChangesAsync();
-    return pet;
+    return CreatedAtAction(nameof(Create), new { id = pet.Id }, pet);
   }
 
   public class CreatePetRequest

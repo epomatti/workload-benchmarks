@@ -42,9 +42,6 @@ public class Pet
   public int Age { get; set; }
   public string Breed { get; set; }
   public string Type { get; set; }
-  public int OwnerId { get; set; }
-
-  [ForeignKey("OwnerId")]
   public Owner? Owner { get; set; }
 
   public Pet(string name, int age, string breed, string type)
