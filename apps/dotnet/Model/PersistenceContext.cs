@@ -2,15 +2,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using pets;
 
-public class PetContext : DbContext
+public class PersistenceContext : DbContext
 {
 
-  BuildConfig _config;
+  private BuildConfig _config;
 
-  public DbSet<Owner>? Owners { get; set; }
-  public DbSet<Pet>? Pets { get; set; }
+  public DbSet<Owner> Owners => Set<Owner>();
+  public DbSet<Pet> Pets => Set<Pet>();
 
-  public PetContext(BuildConfig config)
+  public PersistenceContext(BuildConfig config)
   {
     _config = config;
   }
@@ -19,7 +19,6 @@ public class PetContext : DbContext
       => options.UseSqlServer(
             @"Data Source=localhost; Initial Catalog=master; User Id=SA; Password=StrPass#456");
 
-  // "Data Source=localhost; Initial Catalog=dotnet-6-crud-api; User Id=testUser; Password=testPass123"
 }
 
 public class Owner
@@ -36,10 +35,21 @@ public class Pet
 {
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   public int Id { get; set; }
-  public string? Name { get; set; }
+  public string Name { get; set; }
   public int Age { get; set; }
-
-  public string? Breed { get; set; }
-  public string? Type { get; set; }
+  public string Breed { get; set; }
+  public string Type { get; set; }
   public Owner? Owner { get; set; }
+
+  [ForeignKey("Owner")]
+  public int OwnerFK { get; set; }
+
+  public Pet(string name, int age, string breed, string type)
+  {
+    Name = name;
+    Age = age;
+    Breed = breed;
+    Type = type;
+  }
+
 }
