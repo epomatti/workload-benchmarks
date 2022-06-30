@@ -1,16 +1,16 @@
-name: Python Django
+name: django
 
 on:
   push:
     branches: ['main']
-    paths: ['apps/wl1-python-django/api/**']
+    paths: ['apps/django/**']
     
   workflow_dispatch:
 
 defaults:
   run:
     shell: bash
-    working-directory: apps/wl1-python-django/api/
+    working-directory: apps/django/
     
 env:
   REGISTRY: ghcr.io
@@ -36,6 +36,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: "{{defaultContext}}:apps/wl1-python-django/api/"
+          context: "{{defaultContext}}:apps/django/"
           push: true
-          tags: epomatti/workload-benchmarks-python-django:latest
+          tags: epomatti/workload-benchmarks-django:latest
