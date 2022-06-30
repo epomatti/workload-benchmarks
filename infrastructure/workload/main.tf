@@ -116,6 +116,11 @@ resource "azurerm_service_plan" "default" {
   os_type             = "Linux"
   sku_name            = var.plan_sku_name
 
+  lifecycle {
+    ignore_changes = [
+      sku_name
+    ]
+  }
 }
 
 resource "azurerm_linux_web_app" "default" {
