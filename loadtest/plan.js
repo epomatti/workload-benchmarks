@@ -14,6 +14,7 @@ export default function () {
   // Create Owner
   const ownerBody = {
     "name": "John",
+    // "age": 16,
     "birthday": "2000-01-05"
   }
   const ownerPayload = JSON.stringify(ownerBody);
