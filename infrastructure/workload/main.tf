@@ -8,14 +8,14 @@ locals {
 # Group
 
 resource "azurerm_resource_group" "default" {
-  name     = "rg-${affix}"
+  name     = "rg-${local.affix}"
   location = var.location
 }
 
 # Log Analytics
 
 resource "azurerm_log_analytics_workspace" "default" {
-  name                = "log-${affix}"
+  name                = "log-${local.affix}"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
   sku                 = "PerGB2018"
@@ -25,7 +25,7 @@ resource "azurerm_log_analytics_workspace" "default" {
 # Network
 
 resource "azurerm_virtual_network" "default" {
-  name                = "vnet-${affix}"
+  name                = "vnet-${local.affix}"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
   address_space       = ["10.0.0.0/16"]
@@ -68,7 +68,7 @@ resource "azurerm_subnet" "vm" {
 # Database
 
 resource "azurerm_mssql_server" "default" {
-  name                         = "sql-${affix}999"
+  name                         = "sql-${local.affix}999"
   resource_group_name          = azurerm_resource_group.default.name
   location                     = azurerm_resource_group.default.location
   version                      = "12.0"
@@ -77,7 +77,7 @@ resource "azurerm_mssql_server" "default" {
 }
 
 resource "azurerm_mssql_database" "default" {
-  name           = "sqldb-${affix}"
+  name           = "sqldb-${local.affix}"
   server_id      = azurerm_mssql_server.default.id
   max_size_gb    = var.mssql_max_size_gb
   read_scale     = var.mssql_read_scale
@@ -100,7 +100,7 @@ resource "azurerm_mssql_virtual_network_rule" "app" {
 # Insights
 
 resource "azurerm_application_insights" "default" {
-  name                = "appi-${affix}"
+  name                = "appi-${local.affix}"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
   workspace_id        = azurerm_log_analytics_workspace.default.id
@@ -110,7 +110,7 @@ resource "azurerm_application_insights" "default" {
 # App
 
 resource "azurerm_service_plan" "default" {
-  name                = "plan-${affix}"
+  name                = "plan-${local.affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   os_type             = "Linux"
@@ -119,7 +119,7 @@ resource "azurerm_service_plan" "default" {
 }
 
 resource "azurerm_linux_web_app" "default" {
-  name                = "app-${affix}"
+  name                = "app-${local.affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   service_plan_id     = azurerm_service_plan.default.id
@@ -249,7 +249,7 @@ resource "azurerm_monitor_diagnostic_setting" "app" {
 # Load Testing VM
 
 resource "azurerm_network_security_group" "default" {
-  name                = "nsg-${affix}"
+  name                = "nsg-${local.affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
 
@@ -267,14 +267,14 @@ resource "azurerm_network_security_group" "default" {
 }
 
 resource "azurerm_public_ip" "default" {
-  name                = "pip-${affix}"
+  name                = "pip-${local.affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "default" {
-  name                = "nic-${affix}"
+  name                = "nic-${local.affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
 
@@ -292,7 +292,7 @@ resource "azurerm_network_interface_security_group_association" "default" {
 }
 
 resource "azurerm_linux_virtual_machine" "default" {
-  name                  = "vm-${affix}"
+  name                  = "vm-${local.affix}"
   resource_group_name   = azurerm_resource_group.default.name
   location              = azurerm_resource_group.default.location
   size                  = "Standard_DS1_v2"

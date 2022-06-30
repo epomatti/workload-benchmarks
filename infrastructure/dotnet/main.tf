@@ -40,4 +40,6 @@ module "workload" {
 
   # app
   plan_sku_name = var.plan_sku_name
+  websites_port = var.websites_port
+  docker_image  = var.docker_image
 }
