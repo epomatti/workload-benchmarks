@@ -12,10 +12,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Telemetry
+// Application Insights Telemetry
 builder.Services.AddApplicationInsightsTelemetry();
+// Health Check
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
+
+app.MapHealthChecks("/healthz");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
