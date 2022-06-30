@@ -1,34 +1,21 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.11.0"
-    }
-  }
-  backend "local" {
-    path = "./.workspace/terraform.tfstate"
-  }
-}
 
-provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
+locals {
+  affix          = "benchmark-${var.app}"
+  mssql_username = "4dm1n157r470r"
+  mssql_password = "4-v3ry-53cr37-p455w0rd"
 }
 
 # Group
 
 resource "azurerm_resource_group" "default" {
-  name     = var.rg_name
+  name     = "rg-${affix}"
   location = var.location
 }
 
 # Log Analytics
 
 resource "azurerm_log_analytics_workspace" "default" {
-  name                = "log-benchmark"
+  name                = "log-${affix}"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
   sku                 = "PerGB2018"
@@ -38,7 +25,7 @@ resource "azurerm_log_analytics_workspace" "default" {
 # Network
 
 resource "azurerm_virtual_network" "default" {
-  name                = "vnet-benchmark"
+  name                = "vnet-${affix}"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
   address_space       = ["10.0.0.0/16"]
@@ -81,16 +68,16 @@ resource "azurerm_subnet" "vm" {
 # Database
 
 resource "azurerm_mssql_server" "default" {
-  name                         = "sql-benchmark999"
+  name                         = "sql-${affix}999"
   resource_group_name          = azurerm_resource_group.default.name
   location                     = azurerm_resource_group.default.location
-  version                      = var.mssql_version
-  administrator_login          = var.mssql_login
-  administrator_login_password = var.mssql_password
+  version                      = "12.0"
+  administrator_login          = local.mssql_username
+  administrator_login_password = local.mssql_password
 }
 
 resource "azurerm_mssql_database" "default" {
-  name           = "sqldb-benchmark"
+  name           = "sqldb-${affix}"
   server_id      = azurerm_mssql_server.default.id
   max_size_gb    = var.mssql_max_size_gb
   read_scale     = var.mssql_read_scale
@@ -113,7 +100,7 @@ resource "azurerm_mssql_virtual_network_rule" "app" {
 # Insights
 
 resource "azurerm_application_insights" "default" {
-  name                = "appi-benchmark"
+  name                = "appi-${affix}"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
   workspace_id        = azurerm_log_analytics_workspace.default.id
@@ -123,7 +110,7 @@ resource "azurerm_application_insights" "default" {
 # App
 
 resource "azurerm_service_plan" "default" {
-  name                = "plan-benchmark"
+  name                = "plan-${affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   os_type             = "Linux"
@@ -132,7 +119,7 @@ resource "azurerm_service_plan" "default" {
 }
 
 resource "azurerm_linux_web_app" "default" {
-  name                = "app-benchmark999"
+  name                = "app-${affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   service_plan_id     = azurerm_service_plan.default.id
@@ -144,7 +131,7 @@ resource "azurerm_linux_web_app" "default" {
     always_on = true
 
     application_stack {
-      docker_image     = "epomatti/workload-benchmarks-python-django"
+      docker_image     = var.docker_image
       docker_image_tag = "latest"
     }
   }
@@ -153,12 +140,12 @@ resource "azurerm_linux_web_app" "default" {
     APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.default.connection_string
     DOCKER_ENABLE_CI                      = true
     DOCKER_REGISTRY_SERVER_URL            = "https://index.docker.io"
-    WEBSITES_PORT                         = 8000
+    WEBSITES_PORT                         = var.websites_port
     DB_NAME                               = azurerm_mssql_database.default.name
     DB_SERVER                             = azurerm_mssql_server.default.fully_qualified_domain_name
     DB_PORT                               = 1433
-    DB_USER                               = var.mssql_login
-    DB_PASSWORD                           = var.mssql_password
+    DB_USER                               = local.mssql_username
+    DB_PASSWORD                           = local.mssql_password
   }
 }
 
@@ -176,8 +163,8 @@ resource "azurerm_monitor_diagnostic_setting" "plan" {
     category = "AllMetrics"
     enabled  = true
     retention_policy {
-      days    = 0
-      enabled = false
+      days    = 7
+      enabled = true
     }
   }
 }
@@ -262,7 +249,7 @@ resource "azurerm_monitor_diagnostic_setting" "app" {
 # Load Testing VM
 
 resource "azurerm_network_security_group" "default" {
-  name                = "nsg-benchmark"
+  name                = "nsg-${affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
 
@@ -280,14 +267,14 @@ resource "azurerm_network_security_group" "default" {
 }
 
 resource "azurerm_public_ip" "default" {
-  name                = "pip-benchmark"
+  name                = "pip-${affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "default" {
-  name                = "nic-benchmark"
+  name                = "nic-${affix}"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
 
@@ -305,7 +292,7 @@ resource "azurerm_network_interface_security_group_association" "default" {
 }
 
 resource "azurerm_linux_virtual_machine" "default" {
-  name                  = "vm-benchmark"
+  name                  = "vm-${affix}"
   resource_group_name   = azurerm_resource_group.default.name
   location              = azurerm_resource_group.default.location
   size                  = "Standard_DS1_v2"
