@@ -40,6 +40,6 @@ variable "websites_port" {
 }
 
 variable "docker_image" {
-  default = "epomatti/workload-benchmarks-django"
+  default = "epomatti/workload-benchmarks-dotnet"
   type    = string
 }
