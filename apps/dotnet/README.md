@@ -20,3 +20,5 @@ az monitor app-insights component show --app 'appi-benchmark-dotnet-dev' -g 'rg-
 export APPLICATIONINSIGHTS_CONNECTION_STRING='<....>'
 ```
 
+docker build -t benchmark-dotnet .
+

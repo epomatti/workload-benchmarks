@@ -19,8 +19,7 @@ public class PersistenceContext : DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder options)
       => options.UseSqlServer(
-            @"Data Source=localhost; Initial Catalog=master; User Id=SA; Password=StrPass#456");
-
+            @_config.GetDatabaseConnectionString());
 }
 
 public class Owner
