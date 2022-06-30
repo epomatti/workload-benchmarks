@@ -29,7 +29,7 @@ variable "mssql_zone_redundant" {
 
 # App
 variable "plan_sku_name" {
-  default = "B1"
+  default = "S2"
   type    = string
 }
 
