@@ -83,6 +83,12 @@ resource "azurerm_mssql_database" "default" {
   read_scale     = var.mssql_read_scale
   sku_name       = var.mssql_sku_name
   zone_redundant = var.mssql_zone_redundant
+
+  lifecycle {
+    ignore_changes = [
+      max_size_gb, sku_name
+    ]
+  }
 }
 
 resource "azurerm_mssql_virtual_network_rule" "sql" {
