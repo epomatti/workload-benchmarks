@@ -16,4 +16,7 @@ az monitor log-analytics workspace create -g 'rg-benchmark-dev' -n 'log-benchmar
 workspaceId=$(az monitor log-analytics workspace show -g 'rg-benchmark-dev' -n 'log-benchmark-dev' --query id -o tsv)
 az monitor app-insights component create --app 'appi-benchmark-dotnet-dev' -l 'brazilsouth' -g 'rg-benchmark-dev' --workspace $workspaceId
 az monitor app-insights component show --app 'appi-benchmark-dotnet-dev' -g 'rg-benchmark-dev' --query connectionString -o tsv
+
+export APPLICATIONINSIGHTS_CONNECTION_STRING='<....>'
 ```
+
