@@ -33,6 +33,10 @@ variable "plan_sku_name" {
   type    = string
 }
 
+variable "worker_count" {
+  default = 2
+  type    = number
+}
 
 variable "websites_port" {
   default = 80
@@ -41,5 +45,10 @@ variable "websites_port" {
 
 variable "docker_image" {
   default = "epomatti/workload-benchmarks-dotnet"
+  type    = string
+}
+
+variable "health_check_path" {
+  default = "/healthz"
   type    = string
 }

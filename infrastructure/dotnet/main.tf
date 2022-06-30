@@ -39,7 +39,9 @@ module "workload" {
   mssql_zone_redundant = var.mssql_zone_redundant
 
   # app
-  plan_sku_name = var.plan_sku_name
-  websites_port = var.websites_port
-  docker_image  = var.docker_image
+  plan_sku_name     = var.plan_sku_name
+  worker_count      = var.worker_count
+  websites_port     = var.websites_port
+  docker_image      = var.docker_image
+  health_check_path = var.health_check_path
 }

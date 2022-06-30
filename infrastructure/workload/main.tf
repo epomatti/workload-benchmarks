@@ -121,10 +121,11 @@ resource "azurerm_service_plan" "default" {
   location            = azurerm_resource_group.default.location
   os_type             = "Linux"
   sku_name            = var.plan_sku_name
+  worker_count        = var.worker_count
 
   lifecycle {
     ignore_changes = [
-      sku_name
+      sku_name, worker_count
     ]
   }
 }
@@ -136,10 +137,9 @@ resource "azurerm_linux_web_app" "default" {
   service_plan_id     = azurerm_service_plan.default.id
   https_only          = true
 
-  # TODO: Health Check
-
   site_config {
-    always_on = true
+    always_on         = true
+    health_check_path = var.health_check_path
 
     application_stack {
       docker_image     = var.docker_image
@@ -243,6 +243,26 @@ resource "azurerm_monitor_diagnostic_setting" "app" {
     retention_policy {
       days    = 7
       enabled = true
+    }
+  }
+
+  log {
+    category = "AppServiceAntivirusScanAuditLogs"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  log {
+    category = "AppServiceFileAuditLogs"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
     }
   }
 
