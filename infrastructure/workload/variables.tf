@@ -32,7 +32,15 @@ variable "plan_sku_name" {
   type = string
 }
 
-variable "worker_count" {
+variable "autoscale_default_nodes" {
+  type = number
+}
+
+variable "autoscale_minimum_nodes" {
+  type = number
+}
+
+variable "autoscale_maximum_nodes" {
   type = number
 }
 

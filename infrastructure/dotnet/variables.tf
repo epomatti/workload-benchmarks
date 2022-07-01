@@ -29,12 +29,22 @@ variable "mssql_zone_redundant" {
 
 # App
 variable "plan_sku_name" {
-  default = "S2"
+  default = "S1"
   type    = string
 }
 
-variable "worker_count" {
-  default = 2
+variable "autoscale_default_nodes" {
+  default = 1
+  type    = number
+}
+
+variable "autoscale_minimum_nodes" {
+  default = 1
+  type    = number
+}
+
+variable "autoscale_maximum_nodes" {
+  default = 1
   type    = number
 }
 

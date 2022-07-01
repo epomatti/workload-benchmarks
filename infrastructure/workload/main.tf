@@ -180,6 +180,63 @@ resource "azurerm_monitor_diagnostic_setting" "plan" {
   }
 }
 
+resource "azurerm_monitor_autoscale_setting" "default" {
+  name                = "AppAutoscaling"
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  target_resource_id  = azurerm_service_plan.default.id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.autoscale_default_nodes
+      minimum = var.autoscale_minimum_nodes
+      maximum = var.autoscale_maximum_nodes
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_service_plan.default.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 90
+      }
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_service_plan.default.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 40
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+  }
+
+}
+
 
 resource "azurerm_monitor_diagnostic_setting" "app" {
   name                       = "Application Diagnostics"
