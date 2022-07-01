@@ -41,21 +41,43 @@ public class SimpleController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<SimpleParent?>> GetById(long id)
   {
-    SimpleParent? parents = await _context.SimpleParents.FindAsync(id);
-    if (parents == null)
+    SimpleParent? parent = await _context.SimpleParents.FindAsync(id);
+    if (parent == null)
     {
       return NotFound();
     }
-    return Ok(parents);
+    return Ok(parent);
   }
 
-  [Route("/api/simple/{id}/child1")]
+  [Route("/api/simple/{parentId}/child1")]
   [HttpPost]
-  public async Task<ActionResult<SimpleParent>> CreateSimpleChild1(SimpleParent parent)
+  public async Task<ActionResult<SimpleParent>> CreateSimpleChild1(long parentId, SimpleChild1 child)
   {
-    await _context.SimpleParents.AddAsync(parent);
+    SimpleParent? parent = await _context.SimpleParents.FindAsync(parentId);
+    if (parent == null)
+    {
+      return NotFound();
+    }
+
+    // Random business rules
+    if (child.String1 != "XXX")
+    {
+      child.InnerString1 = child.String1 + child.String2;
+    };
+    if (child.Number1 > -1)
+    {
+      child.Sum1 = child.Number1 + child.Number2;
+    }
+    var minDate = DateTime.MinValue;
+    if (DateTime.Compare(child.DateTime1, minDate) > 0 && DateTime.Compare(child.DateTime2, minDate) > 0)
+    {
+      child.DateTimeControl1 = new DateTime();
+    }
+    // Random business rules
+
+    await _context.SimpleChildren1.AddAsync(child);
     await _context.SaveChangesAsync();
-    return CreatedAtAction(nameof(CreateSimpleChild1), new { id = parent.Id }, parent);
+    return CreatedAtAction(nameof(CreateSimpleChild1), new { id = child.Id }, child);
   }
 
 
