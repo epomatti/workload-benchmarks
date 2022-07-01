@@ -5,7 +5,6 @@ namespace pets;
 
 [ApiController]
 [Route("/api/owners")]
-
 public class OwnerController : ControllerBase
 {
 
