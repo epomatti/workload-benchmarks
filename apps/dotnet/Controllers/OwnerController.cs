@@ -9,12 +9,10 @@ namespace pets;
 public class OwnerController : ControllerBase
 {
 
-  private readonly BuildConfig _config;
   private PersistenceContext _context;
 
-  public OwnerController(BuildConfig config, PersistenceContext context)
+  public OwnerController(PersistenceContext context)
   {
-    _config = config;
     _context = context;
   }
 

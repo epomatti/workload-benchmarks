@@ -7,12 +7,11 @@ namespace pets;
 public class PetController : ControllerBase
 {
 
-  private readonly BuildConfig _config;
+
   private PersistenceContext _context;
 
-  public PetController(BuildConfig config, PersistenceContext context)
+  public PetController(PersistenceContext context)
   {
-    _config = config;
     _context = context;
   }
 
