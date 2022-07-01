@@ -19,6 +19,9 @@ public class PersistenceContext : DbContext
   }
 
   protected override void OnConfiguring(DbContextOptionsBuilder options)
-      => options.UseSqlServer(
+  {
+    // options.LogTo(Console.WriteLine);
+    options.UseSqlServer(
             @_config.GetDatabaseConnectionString());
+  }
 }

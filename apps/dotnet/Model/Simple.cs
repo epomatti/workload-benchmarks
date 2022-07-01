@@ -38,7 +38,7 @@ public class SimpleChild1
 {
   [Key]
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public long Id { get; set; }
   [Required]
   public string? String1 { get; set; }
   [Required]
@@ -54,6 +54,9 @@ public class SimpleChild1
   [Required]
   public DateTime DateTime2 { get; set; }
   public DateTime DateTimeControl1 { get; set; }
+  public long ParentId { get; set; }
+
+  [ForeignKey("ParentId")]
   [JsonIgnore]
   public SimpleParent? Parent { get; set; }
 }
@@ -62,7 +65,7 @@ public class SimpleChild2
 {
   [Key]
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public long Id { get; set; }
   [Required]
   public string? String1 { get; set; }
   [Required]

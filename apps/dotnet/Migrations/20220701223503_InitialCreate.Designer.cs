@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace pets.Migrations
 {
     [DbContext(typeof(PersistenceContext))]
-    [Migration("20220701214501_InitialCreate")]
+    [Migration("20220701223503_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,11 +25,11 @@ namespace pets.Migrations
 
             modelBuilder.Entity("Benchmark.Simple.SimpleChild1", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateTime1")
                         .HasColumnType("datetime2");
@@ -49,7 +49,7 @@ namespace pets.Migrations
                     b.Property<int>("Number2")
                         .HasColumnType("int");
 
-                    b.Property<long?>("ParentId")
+                    b.Property<long>("ParentId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("String1")
@@ -72,11 +72,11 @@ namespace pets.Migrations
 
             modelBuilder.Entity("Benchmark.Simple.SimpleChild2", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateTime1")
                         .HasColumnType("datetime2");
@@ -225,7 +225,9 @@ namespace pets.Migrations
                 {
                     b.HasOne("Benchmark.Simple.SimpleParent", "Parent")
                         .WithMany("Children1")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Parent");
                 });

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Benchmark.Simple;
 
@@ -59,6 +60,8 @@ public class SimpleController : ControllerBase
       return NotFound();
     }
 
+    child.ParentId = parentId;
+
     // Random business rules
     if (child.String1 != "XXX")
     {
@@ -79,6 +82,5 @@ public class SimpleController : ControllerBase
     await _context.SaveChangesAsync();
     return CreatedAtAction(nameof(CreateSimpleChild1), new { id = child.Id }, child);
   }
-
 
 }

@@ -73,7 +73,7 @@ namespace pets.Migrations
                 name: "SimpleChildren1",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     String1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     String2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -84,7 +84,7 @@ namespace pets.Migrations
                     DateTime1 = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateTime2 = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateTimeControl1 = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ParentId = table.Column<long>(type: "bigint", nullable: true)
+                    ParentId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,14 +93,15 @@ namespace pets.Migrations
                         name: "FK_SimpleChildren1_SimpleParents_ParentId",
                         column: x => x.ParentId,
                         principalTable: "SimpleParents",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "SimpleChildren2",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     String1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     String2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
