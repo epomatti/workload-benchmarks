@@ -121,7 +121,6 @@ resource "azurerm_service_plan" "default" {
   location            = azurerm_resource_group.default.location
   os_type             = "Linux"
   sku_name            = var.plan_sku_name
-  worker_count        = var.worker_count
 
   lifecycle {
     ignore_changes = [
