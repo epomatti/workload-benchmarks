@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace pets.Migrations
 {
     [DbContext(typeof(PersistenceContext))]
-    [Migration("20220701211511_InitialCreate5")]
-    partial class InitialCreate5
+    [Migration("20220701214501_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,12 @@ namespace pets.Migrations
                     b.Property<DateTime>("DateTime2")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateTimeControl1")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InnerString1")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Number1")
                         .HasColumnType("int");
 
@@ -47,10 +53,15 @@ namespace pets.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("String1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("String2")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Sum1")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -73,6 +84,12 @@ namespace pets.Migrations
                     b.Property<DateTime>("DateTime2")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateTimeControl1")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InnerString1")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Number1")
                         .HasColumnType("int");
 
@@ -83,10 +100,15 @@ namespace pets.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("String1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("String2")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Sum1")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -128,12 +150,15 @@ namespace pets.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("String1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("String2")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("String3")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Sum1")
