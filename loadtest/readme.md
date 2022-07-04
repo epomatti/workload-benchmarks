@@ -15,4 +15,3 @@ Run the test - change the loading parameters as per requirement:
 ```ps1
 k6 run --vus 200 --duration 120s pets.js
 ```
-
