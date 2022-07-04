@@ -3,13 +3,11 @@ import { sleep } from 'k6';
 
 export default function () {
 
-  const server = "https://app-benchmark-dotnet999.azurewebsites.net";
-  // const server = "http://localhost:8000";
+  const server = __ENV.HOST;
 
   const params = {
     headers: { 'Content-Type': 'application/json' },
   };
-
 
   // Create Owner
   const ownerBody = {
