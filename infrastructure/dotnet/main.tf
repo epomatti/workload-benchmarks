@@ -20,17 +20,13 @@ provider "azurerm" {
 
 # Locals
 
-locals {
-  app = "dotnet"
-}
-
 module "workload" {
 
   source = "../workload"
 
   # resources
   location = var.location
-  app      = local.app
+  app      = var.app
 
   # sqlserver
   mssql_max_size_gb    = var.mssql_max_size_gb

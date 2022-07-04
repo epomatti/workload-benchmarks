@@ -4,6 +4,11 @@ variable "location" {
   type    = string
 }
 
+variable "app" {
+  default = "dotnet"
+  type    = string
+}
+
 # Database
 
 variable "mssql_max_size_gb" {
