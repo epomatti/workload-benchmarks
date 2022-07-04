@@ -302,25 +302,25 @@ resource "azurerm_monitor_diagnostic_setting" "app" {
     }
   }
 
-  log {
-    category = "AppServiceAntivirusScanAuditLogs"
-    enabled  = false
+  # log {
+  #   category = "AppServiceAntivirusScanAuditLogs"
+  #   enabled  = false
 
-    retention_policy {
-      days    = 0
-      enabled = false
-    }
-  }
+  #   retention_policy {
+  #     days    = 0
+  #     enabled = false
+  #   }
+  # }
 
-  log {
-    category = "AppServiceFileAuditLogs"
-    enabled  = false
+  # log {
+  #   category = "AppServiceFileAuditLogs"
+  #   enabled  = false
 
-    retention_policy {
-      days    = 0
-      enabled = false
-    }
-  }
+  #   retention_policy {
+  #     days    = 0
+  #     enabled = false
+  #   }
+  # }
 
   metric {
     category = "AllMetrics"
