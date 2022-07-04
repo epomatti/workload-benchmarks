@@ -3,7 +3,7 @@ import { sleep } from 'k6';
 
 export default function () {
 
-  const server = __ENV.HOST;
+  const server = __ENV.K6_HOST;
 
   const params = {
     headers: { 'Content-Type': 'application/json' },
