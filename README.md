@@ -2,6 +2,8 @@
 
 Project to load test various languages with dummy data to help determine sizing requirements on Azure.
 
+<img src=".docs/metrics.png" width=600 />
+
 ## Load Testing
 
 Set the target environment:
